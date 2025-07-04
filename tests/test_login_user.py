@@ -1,6 +1,6 @@
 import pytest
 import allure
-from data.response import StatusCode
+from data.response import StatusCode, ResponseText
 from methods.create_user import (
     login_user,
     login_with_wrong_email,
@@ -65,7 +65,7 @@ class TestLoginUser:
 
         assert response.status_code == StatusCode.UNAUTHORIZED
         assert response.json()["success"] is False
-        assert "email or password are incorrect" in response.json()["message"].lower()
+        assert ResponseText.INCORRECT_CREDENTIALS in response.json()["message"].lower()
 
     @allure.story("Неуспешный логин")
     @allure.title("Попытка входа с неверным паролем")
@@ -75,7 +75,7 @@ class TestLoginUser:
 
         assert response.status_code == StatusCode.UNAUTHORIZED
         assert response.json()["success"] is False
-        assert "email or password are incorrect" in response.json()["message"].lower()
+        assert ResponseText.INCORRECT_CREDENTIALS in response.json()["message"].lower()
 
     @allure.story("Неуспешный логин")
     @allure.title("Попытка входа без email")
@@ -85,7 +85,7 @@ class TestLoginUser:
 
         assert response.status_code == StatusCode.UNAUTHORIZED
         assert response.json()["success"] is False
-        assert "email or password are incorrect" in response.json()["message"].lower()
+        assert ResponseText.INCORRECT_CREDENTIALS in response.json()["message"].lower()
 
     @allure.story("Неуспешный логин")
     @allure.title("Попытка входа без пароля")
@@ -95,7 +95,7 @@ class TestLoginUser:
 
         assert response.status_code == StatusCode.UNAUTHORIZED
         assert response.json()["success"] is False
-        assert "email or password are incorrect" in response.json()["message"].lower()
+        assert ResponseText.INCORRECT_CREDENTIALS in response.json()["message"].lower()
 
     @allure.story("Неуспешный логин")
     @allure.title("Попытка входа с пустыми полями")
@@ -104,4 +104,4 @@ class TestLoginUser:
 
         assert response.status_code == StatusCode.UNAUTHORIZED
         assert response.json()["success"] is False
-        assert "email or password are incorrect" in response.json()["message"].lower()
+        assert ResponseText.INCORRECT_CREDENTIALS in response.json()["message"].lower()

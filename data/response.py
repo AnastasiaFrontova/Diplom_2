@@ -1,8 +1,10 @@
 class ResponseText:  # Тексты ответов сервера
     CREATE_USER_DOUBLE = "User already exists"
+    REQUIRED_FIELDS_MISSING = "Email, password and name are required fields"
     INTERNAL_SERVER_ERROR = 'Internal Server Error'
-    RESPONSE_NOT_AUTHORIZED = 'You should be authorised'
-
+    NOT_AUTHORIZED = 'You should be authorised'
+    INCORRECT_CREDENTIALS = 'email or password are incorrect'
+    MISSING_INGREDIENTS = "Ingredient ids must be provided"
 
 class StatusCode:  # Статус-коды ответа сервера
     OK = 200

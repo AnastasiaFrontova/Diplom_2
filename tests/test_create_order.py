@@ -1,7 +1,7 @@
 from data.ingredients import Ingredients
 import pytest
 import allure
-from data.response import StatusCode
+from data.response import StatusCode, ResponseText
 from generation import generate_user_data_without_field
 from methods.create_order import create_order_with_auth, create_order_without_auth
 
@@ -49,7 +49,7 @@ class TestCreateOrder:
         assert response.status_code == StatusCode.UNAUTHORIZED, (
             f"Ожидался статус код {StatusCode.UNAUTHORIZED}, получен {response.status_code}"
         )
-        assert "You should be authorised" in response.json()["message"], (
+        assert ResponseText.NOT_AUTHORIZED in response.json()["message"], (
             "Сообщение об ошибке должно указывать на необходимость авторизации"
         )
 
@@ -62,7 +62,7 @@ class TestCreateOrder:
         )
 
         assert response.status_code == StatusCode.BAD_REQUEST
-        assert "Ingredient ids must be provided" in response.json()["message"]
+        assert ResponseText.MISSING_INGREDIENTS in response.json()["message"]
 
     @allure.story("Неуспешное создание заказа")
     @allure.title("Попытка создания заказа с неверным хешем ингредиентов")

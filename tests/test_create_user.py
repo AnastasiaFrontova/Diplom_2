@@ -1,6 +1,6 @@
 import pytest
 import allure
-from data.response import StatusCode
+from data.response import StatusCode, ResponseText
 from generation import generate_user_data_without_field
 from methods.create_user import create_user, login_user, delete_user
 
@@ -35,11 +35,6 @@ class TestCreateUser:
             assert "refreshToken" in response_data, "В ответе отсутствует refreshToken"
             assert response_data["accessToken"].startswith("Bearer "), "accessToken должен начинаться с 'Bearer '"
 
-        # Очистка - удаляем созданного пользователя
-        login_response = login_user(user_data["email"], user_data["password"])
-        access_token = login_response.json().get("accessToken")
-        if access_token:
-            delete_user(access_token)
 
     @allure.story("Создание существующего пользователя")
     @allure.title("Попытка создания уже зарегистрированного пользователя")
@@ -63,11 +58,6 @@ class TestCreateUser:
             assert "message" in response_data, "В ответе отсутствует сообщение об ошибке"
             assert response_data["message"] == "User already exists", "Неверное сообщение об ошибке"
 
-        # Очистка
-        login_response = login_user(user_data["email"], user_data["password"])
-        access_token = login_response.json().get("accessToken")
-        if access_token:
-            delete_user(access_token)
 
     @allure.story("Создание пользователя с неполными данными")
     @allure.title("Попытка создания пользователя без обязательного поля")
@@ -88,6 +78,6 @@ class TestCreateUser:
                 assert response_data["success"] is False, "Поле 'success' должно быть False"
 
                 assert "message" in response_data, "Отсутствует сообщение об ошибке"
-                assert response_data["message"] == "Email, password and name are required fields", (
+                assert response_data["message"] == ResponseText.REQUIRED_FIELDS_MISSING, (
                     f"Неверное сообщение об ошибке: {response_data['message']}"
                 )
